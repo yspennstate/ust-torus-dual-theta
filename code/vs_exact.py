@@ -9,6 +9,8 @@ cnt = Counter()
 tot = 0
 for line in open(sys.argv[2], encoding="utf-8"):
     f = line.rstrip("\n").split("\t")
+    if (int(f[0]), int(f[1]), int(f[2])) != (ex["n1"], ex["n2"], ex["s"]):
+        sys.exit(f"sample line for torus {f[:3]} does not match the exact law of ({ex['n1']}, {ex['n2']}, {ex['s']})")
     cls = sorted(tuple(map(int, x.split(","))) for x in f[4].split(";")) if f[4] else []
     cnt[str(tuple(cls))] += 1
     tot += 1
@@ -24,5 +26,9 @@ for k in sorted(set(p) | set(cnt), key=lambda k: -p.get(k, 0)):
     if e > 0:
         chi2 += (cnt.get(k, 0) - e * tot) ** 2 / (e * tot)
     print(f"  {e:.6f} {o:.6f} z={z:+.2f} {k}")
-print(f"chi2 {chi2:.1f} on {len(p) - 1} dof, worst |z| {worst:.2f}, unseen-in-exact classes "
-      f"{sum(v for k, v in cnt.items() if k not in p)}")
+impossible = sum(v for k, v in cnt.items() if k not in p)
+if impossible:
+    chi2 = math.inf
+print(f"chi2 {chi2:.1f} on {len(p) - 1} dof, worst |z| {worst:.2f}, unseen-in-exact classes {impossible}")
+if impossible:
+    sys.exit("samples contain class sets of probability zero")

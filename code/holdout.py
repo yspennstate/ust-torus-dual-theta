@@ -3,7 +3,8 @@
 Fits log w as a polynomial of total degree --deg in (e1, e3) on the training files (log Z free per modulus), then on
 each test file keeps that w fixed and fits only its own log Z. Prints chi2/dof on the test cells and the worst test
 residuals in standard errors.
-Usage: python holdout.py [--min 200] [--deg 3] train1 train2 ... -- test1 test2 ..."""
+With --joint it also prints the predictive chi2 that includes the uncertainty of the fitted coefficients.
+Usage: python holdout.py [--min 200] [--deg 3] [--joint] train1 train2 ... -- test1 test2 ..."""
 import math
 import sys
 
@@ -31,8 +32,12 @@ def design(rows, mons):
 
 def main():
     args = sys.argv[1:]
-    mn, deg = 200, 3
-    while args and args[0] in ("--min", "--deg"):
+    mn, deg, joint = 200, 3, False
+    while args and args[0] in ("--min", "--deg", "--joint"):
+        if args[0] == "--joint":
+            joint = True
+            args = args[1:]
+            continue
         if args[0] == "--min":
             mn = int(args[1])
         else:
@@ -72,6 +77,32 @@ def main():
     print(f"test total: chi2/dof {tot_chi / max(tot_dof, 1):.2f}  (dof {tot_dof})")
     for _, v, fn, Q, P in sorted(worst, reverse=True)[:10]:
         print(f"  {v:+6.2f} se  Q {Q:.3f}  P {P:.5f}  {fn}")
+    if joint:
+        # Predictive statistic including the uncertainty of the fitted coefficients: the increase of the minimised
+        # weighted residual sum of squares when the test files join the fit, each with its own log Z.
+        te = [c for c in (cells(f, mn) for f in test) if len(c) >= 2]
+        r_tr = rss(tr, mons)
+        r_all = rss(tr + te, mons)
+        dof = sum(len(c) - 1 for c in te)
+        print(f"predictive (joint fit): chi2 {r_all - r_tr:.4f} on {dof} dof")
+
+
+def rss(groups, mons):
+    rows = [r for c in groups for r in c]
+    Z = np.zeros((len(rows), len(groups)))
+    j = 0
+    for i, c in enumerate(groups):
+        Z[j:j + len(c), i] = -1.0
+        j += len(c)
+    A = np.hstack([design(rows, mons), Z])
+    y = np.array([r[0] for r in rows])
+    w = np.array([r[1] for r in rows])
+    Aw = A * w[:, None]
+    Aw /= np.linalg.norm(Aw, axis=0)
+    q, _ = np.linalg.qr(Aw)
+    yw = y * w
+    res = yw - q @ (q.T @ yw)
+    return float(res @ res)
 
 
 if __name__ == "__main__":

@@ -98,6 +98,8 @@ def run(n1, n2, s, seed):
 def main():
     n1, n2, s, S, seed, out = (int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]),
                                int(sys.argv[5]), sys.argv[6])
+    if n1 < 3 or n2 < 3 or not 0 <= s < n1:
+        sys.exit("need n1, n2 >= 3 and 0 <= s < n1, so that the grid is a simple 4-regular graph")
     with open(out, "w", encoding="utf-8") as f:
         for k in range(S):
             c = run(n1, n2, s, seed * 1000003 + k)

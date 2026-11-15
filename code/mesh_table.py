@@ -26,7 +26,11 @@ def load(fn):
         for line in f:
             p = line.rstrip("\n").split("\t")
             n1, n2, s, m = int(p[0]), int(p[1]), int(p[2]), int(p[3])
+            if meta is not None and meta != (n1, n2, s):
+                raise ValueError(f"{fn}: lines from two tori, {meta} and {(n1, n2, s)}")
             meta = (n1, n2, s)
+            if m not in (2, 3) or len(p[4].split(";")) != m:
+                raise ValueError(f"{fn}: a tree with {m} classes; Lemma 2.2 allows 2 or 3")
             tot += 1
             if m != 3:
                 cnt["fig8"] += 1

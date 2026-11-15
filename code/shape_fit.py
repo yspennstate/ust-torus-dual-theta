@@ -70,7 +70,7 @@ def main():
         A = A[:, [c for c in range(nw + nt) if c != nw]]  # tau 0 fixes the gauge
     sol, *_ = np.linalg.lstsq(A * w[:, None], y * w, rcond=None)
     res = (y - A @ sol) * w
-    dof = len(rows) - A.shape[1]
+    dof = len(rows) - np.linalg.matrix_rank(A * w[:, None])
     chi2 = float(res @ res)
     print(f"cells {len(rows)}  moduli {nt}  shapes {ns}  dof {dof}  chi2 {chi2:.1f}  chi2/dof {chi2 / max(dof, 1):.2f}")
     print("shapes seen at more than one modulus:",

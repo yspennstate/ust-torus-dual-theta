@@ -12,9 +12,11 @@ fine grid approximation of a torus, and its limit as the mesh tends to zero.
 - `code/exact_small.py` the exact law on a small torus by listing every spanning tree; `code/vs_exact.py` the
   chi-squared comparison of a sample with it; `code/matrix_tree.py` the spanning-tree counts by the matrix-tree theorem.
 - `code/classify.py`, `code/tally.py` tallies of superbases; `code/mesh_table.py` the law by mesh;
-  `code/compare.py` two tori against each other, with a PSL2(Z) matrix carrying classes; `code/shape_fit.py`,
+  `code/compare.py` and `code/compare_global.py` two tori against each other, with a PSL2(Z) matrix carrying
+  classes (cell by cell, and one Pearson chi-squared on the whole table); `code/shape_fit.py`,
   `code/holdout.py`, `code/cand_fit.py` the fits of the weight of a superbase.
-- `results/` the exact laws of the three small tori.
+- `results/` the exact laws of the three small tori, and `validation.txt`, the comparison of both samplers with them.
 - The release `v1.0` carries `samples.tar.gz`: one file per torus with the class set of each of 10^6 trees (80 tori).
+  The release `v1.1` carries `validation_draws.tar.gz`: the draws behind `results/validation.txt`.
 
 Python 3, NumPy, Numba; Swift with Metal on macOS.

@@ -1,0 +1,11 @@
+# Validation of the samplers against the exact laws (results/ex_*.json), 10^6 trees each.
+# GPU: code/ust_metal.swift, seeds 20261101 (3,3,0), 20261102 (3,3,1), 20261103 (4,3,0), 20261108 (8,8,0), 20261116 (16,16,0).
+# CPU: code/ust_torus_shear.py, seeds 20261201, 20261202, 20261203. The draws are in the v1.1 release, validation_draws.tar.gz.
+GPU 3_3_0 chi2 9.4 on 10 dof, worst |z| 2.12, unseen-in-exact classes 0 
+GPU 3_3_1 chi2 8.8 on 8 dof, worst |z| 1.61, unseen-in-exact classes 0 
+GPU 4_3_0 chi2 11.6 on 12 dof, worst |z| 2.34, unseen-in-exact classes 0 
+GPU n=8: figure-eight 22329/1000000 = 0.02233 +- 0.00015
+GPU n=16: figure-eight 5777/1000000 = 0.00578 +- 0.00008
+CPU 3_3_0 chi2 10.8 on 10 dof, worst |z| 2.31, unseen-in-exact classes 0
+CPU 3_3_1 chi2 2.5 on 8 dof, worst |z| 0.74, unseen-in-exact classes 0
+CPU 4_3_0 chi2 5.0 on 12 dof, worst |z| 1.52, unseen-in-exact classes 0

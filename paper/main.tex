@@ -8,6 +8,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
@@ -27,75 +29,88 @@
 \raggedbottom
 \begin{document}
 \begin{abstract}
-Lyons asked for the law of the homology classes carried by the dual of a uniform spanning tree on a fine grid
-approximation of a torus, and whether it has a conformally invariant limit. We show that the fundamental cycles of the
-tree carry the same classes, so the data is a random superbase of the period lattice, and we estimate its law by
-exact sampling with Wilson's algorithm, $10^6$ trees on each of $80$ tori. The estimates support a limit that depends
-only on the conformal class of the torus: three meshes of one modulus agree to $10^{-3}$, and tori placed at an angle
-to the grid give the law of the equivalent axis-parallel torus. We give the limit to about three digits at four moduli
-and show that the weight of a superbase is not an exponential of its energy, the sum of its squared period lengths.
+Lyons asked for the law of the homology classes carried by the dual of a uniform spanning tree on a fine grid on a
+torus, and whether it has a conformally invariant limit. The nonzero classes of the fundamental cycles of the tree are
+those of the dual graph: a superbase of the period lattice when the core of the dual is a theta graph, and a basis
+when it is a figure-eight, which we record separately. We sample $10^6$ trees on each of $80$ tori with Wilson's
+algorithm. Over three meshes at three moduli the leading probabilities move by at most $1.3\cdot10^{-3}$, the
+figure-eight frequency falls by a factor of about $3.5$ per halving of the mesh, and tori placed at an angle to the grid
+agree with the equivalent axis-parallel tori, which supports a conformally invariant limit. We give finest-mesh
+estimates at four moduli and show that, on these meshes, the weight of a superbase is not an exponential of its
+energy.
 \end{abstract}
 \maketitle
 
 \section{Introduction}
 
-Let $\Sigma_\tau=\C/(\Z+\tau\Z)$ with $\operatorname{Im}\tau>0$, and let $G$ be a square grid on $\Sigma_\tau$. A
-spanning tree $T$ of $G$ determines a dual graph $D(T)$ on $\Sigma_\tau$, whose vertices are the faces of $G$ and whose
-edges are the dual edges $e^*$ of the edges $e\notin T$. Lyons observed that $D(T)$ contains only noncontractible
-cycles and asked for the law of the homology basis it gives when $T$ is uniform~\cite[Section~12]{Ly03}: ``Does it
-have a limit as the mesh of the graph tends to 0?'' He expected the limit to exist and to be conformally invariant.
-Schramm included the question in his collection of problems on conformally invariant scaling limits, as a problem
-proposed by Lyons~\cite[Problem~6.2]{Sch07}. In his formulation $D(T)$ contains exactly three edge-simple closed
-paths, and the task is to ``determine the distribution of the triple of homotopy classes containing these three closed
-paths'' as a function of the geometry of the torus.
+Let $\Sigma_\tau=\C/(\Z+\tau\Z)$ with $\operatorname{Im}\tau>0$, and let $G$ be a square grid on $\Sigma_\tau$; for
+rational moduli such grids exist at arbitrarily fine mesh, and every modulus is a limit of rational ones. A spanning tree
+$T$ of $G$ determines a dual graph $D(T)$ on $\Sigma_\tau$, whose vertices are the faces of $G$ and whose edges are the
+dual edges $e^*$ of the edges $e\notin T$. Lyons observed that $D(T)$ contains only noncontractible cycles and asked
+for the law of the homology basis it gives when $T$ is uniform~\cite[Section~12]{Ly03}: ``Does it have a limit as the
+mesh of the graph tends to 0?'' He expected the limit to exist and to be conformally invariant. Schramm included the
+question in his collection of problems on conformally invariant scaling limits, as a problem proposed by
+Lyons~\cite[Problem~6.2]{Sch07}. In his formulation $D(T)$ contains exactly three edge-simple closed paths, and the task
+is to ``[d]etermine the distribution of the triple of homotopy classes containing these three closed paths'' as a
+function of the geometry of the torus. On a torus free homotopy classes of closed curves are homology classes, so up to
+orientation the triple is a set of three classes in $H_1(\Sigma_\tau;\Z)\cong\Z^2$.
 
-On surfaces of higher genus the closest exact results concern cycle-rooted spanning forests. Kenyon computed the law
-of the homology classes of their cycles through the Laplacian twisted by a flat line bundle~\cite{Ken11}, and Kassel
-and Kenyon described the scaling limits of the resulting measures on multicurves~\cite{KK17}. Kenyon and Wilson gave a
-method for computing the probabilities of the connection topologies of a uniform spanning tree on a graph embedded in
-a surface, and applied it to loop-erased random walk on planar graphs~\cite{KW15}. For dimers on tori,
-Kenyon, Sun and Wilson found the asymptotics of the partition function, which carries the law of the homology of the
-height function~\cite{KSW16}. The cycles of $D(T)$ are not those of a cycle-rooted forest, and the question of Lyons
-and Schramm is open.
+On graphs embedded in surfaces of positive genus the closest exact results concern cycle-rooted spanning forests. Forman
+expressed the determinant of the Laplacian twisted by a connection as a sum over such forests~\cite{For93}. Kenyon used
+the Laplacian twisted by a flat line bundle to compute the law of the homology classes of their cycles, with an explicit
+calculation on the square torus~\cite{Ken11}, and Kassel and Kenyon proved conformally invariant scaling limits for the
+resulting measures on noncontractible multicurves~\cite{KK17}. Kenyon and Wilson gave a method for computing the
+probabilities of the connection topologies of a uniform spanning tree on a graph embedded in a surface, and applied it
+to loop-erased random walk on planar graphs~\cite{KW15}. For dimers on tori, Kenyon, Sun and Wilson found the
+asymptotics of the partition functions and the distribution of the height change around the torus~\cite{KSW16}.
+Dub\'edat identified the compactified free field as the limit of the toroidal dimer height~\cite{Dub15}. Dub\'edat and
+Gheissari showed that the height periods of toroidal Temperleyan dimers have a universal discrete Gaussian
+law~\cite{DG15}. Berestycki, Laslier and Ray developed the Temperleyan correspondence on Riemann surfaces and proved
+conformally invariant limits for the associated forests~\cite{BLR25,BLR24}. Lam, Lo and Yuen showed that the dual
+complement of a homological quasi-tree on a discrete surface is again a homological quasi-tree; on a torus the dual of
+a spanning tree is one of rank two~\cite{LLY26}. These results concern other observables: disjoint cycles of forests,
+height periods, or connection events. An explicit joint law of the superbase is not known to us.
 
-We study it numerically. Section~\ref{sec:struct} proves that the fundamental cycles of $T$ carry the same classes as
-$D(T)$, so that sampling $T$ is enough. Section~\ref{sec:method} describes the sampler, Wilson's
+We study the question numerically. Section~\ref{sec:struct} proves that the fundamental cycles of $T$ carry the same
+classes as $D(T)$, so that sampling $T$ is enough. Section~\ref{sec:method} describes the sampler, Wilson's
 algorithm~\cite{Wil96}, and checks it against exact enumeration. Section~\ref{sec:results} reports the estimates. The
 main observations are these.
 \begin{enumerate}
-\item The frequency of a figure-eight core of $D(T)$ falls by a factor of about $3.5$ when the mesh is halved
-(Table~\ref{tab:eight}); in the limit the data is a superbase.
-\item The law of the superbase moves by at most $9\cdot10^{-4}$ from the coarsest to the finest of three meshes
-(Table~\ref{tab:ladder}).
+\item The frequency of a figure-eight core of $D(T)$ falls by a factor of $3.2$ to $3.9$ each time the mesh of the
+square torus is halved (Table~\ref{tab:eight}), consistent with a limit in which the nonzero classes always form a superbase.
+\item Over three meshes at $\tau=i$, $\tau=0.5+i$ and $\tau$ near $e^{i\pi/3}$ the leading probabilities move by at most
+$1.3\cdot10^{-3}$ (Table~\ref{tab:ladder}).
 \item Tori placed at an angle to the grid give the law of the axis-parallel torus of the same conformal class within
 sampling error (Table~\ref{tab:place}).
-\item On the square torus each of the two superbases $\{1,i,1\pm i\}$ has probability $0.475$; at the hexagonal torus
-the equilateral superbase has probability $0.728$ (Table~\ref{tab:limit}).
+\item On the square torus each of the two superbases $\{1,i,1\pm i\}$ has frequency $0.475$ at the finest mesh; near
+the hexagonal torus the equilateral superbase has frequency $0.728$ (Table~\ref{tab:limit}).
 \item The weight of a superbase is close to $\exp(-0.9\,Q)$ for the energy $Q$ of~\eqref{eq:Q} near the square and
-hexagonal tori but not on longer tori, and polynomials in two shape invariants fit it only locally
-(Table~\ref{tab:fit}).
+hexagonal tori, but not at $\tau=2i$; polynomials in two shape invariants fit it on a grid of $49$ moduli, and their
+extrapolation to longer tori is poorly determined (Table~\ref{tab:fit}).
 \end{enumerate}
 A formula for the limit law is not found here. The tables give the values a candidate formula has to reproduce.
 
 \section{The classes of the dual graph}\label{sec:struct}
 
-Let $\Lambda\subset\Z^2$ be the lattice generated by $(n_1,0)$ and $(s,n_2)$, $0\le s<n_1$. We take $G=\Z^2/\Lambda$,
-embedded in the torus $\Sigma=\R^2/\Lambda$ with unit square faces. Dividing by $n_1$ maps $\Sigma$ to $\Sigma_\tau$
-with $\tau=(s+in_2)/n_1$. A closed curve on $\Sigma$ lifts to a path in $\R^2$ with displacement $a(n_1,0)+b(s,n_2)$
-for integers $a,b$. We call $(a,b)$, or the period $a+b\tau$, its class, and identify $H_1(\Sigma;\Z)$ with $\Z^2$ in
-this way. The algebraic intersection number of the classes $(a,b)$ and $(c,d)$ is $ad-bc$.
+Let $\Lambda\subset\Z^2$ be the lattice generated by $(n_1,0)$ and $(s,n_2)$, with $n_1,n_2\ge3$ and $0\le s<n_1$. We
+take $G=\Z^2/\Lambda$, embedded in the torus $\Sigma=\R^2/\Lambda$ with unit square faces; the condition $n_1,n_2\ge3$
+makes $G$ a simple $4$-regular graph. Dividing by $n_1$ maps $\Sigma$ to $\Sigma_\tau$ with $\tau=(s+in_2)/n_1$. A
+closed curve on $\Sigma$ lifts to a path in $\R^2$ with displacement $a(n_1,0)+b(s,n_2)$ for integers $a,b$. We call
+$(a,b)$, or the period $a+b\tau$, its class, and identify $H_1(\Sigma;\Z)$ with $\Z^2$ in this way. The algebraic
+intersection number of the classes $(a,b)$ and $(c,d)$ is $ad-bc$.
 
 \begin{definition}\label{def:superbase}
-A superbase of $\Z^2$ is a set $\{v_1,v_2,v_3\}$, taken up to the signs of its elements, with $v_1+v_2+v_3=0$ and
-$\{v_1,v_2\}$ a basis. Its energy is
+A superbase of $\Z^2$ is a set $\{v_1,v_2,v_3\}$ of classes, each taken up to sign, whose signs can be chosen so that
+$v_1+v_2+v_3=0$, and any two of which form a basis. Its energy is
 \begin{equation}\label{eq:Q}
   Q(S)=\frac{|v_1|^2+|v_2|^2+|v_3|^2}{\operatorname{Im}\tau},
 \end{equation}
 where $|v|$ is the length of the period $v=a+b\tau$.
 \end{definition}
 
-The three periods of a superbase are the sides of a triangle of area $\operatorname{Im}\tau/2$. So $Q(S)$ is twice
-the sum of the cotangents of its angles, and $Q$ depends only on the shape of the triangle.
+The three periods of a superbase are the sides of a triangle of area $\Delta=\operatorname{Im}\tau/2$. For a triangle
+with angles $A,B,C$ one has $|v_1|^2+|v_2|^2+|v_3|^2=4\Delta(\cot A+\cot B+\cot C)$, so $Q(S)$ is twice the sum of the
+cotangents of its angles and depends only on the shape of the triangle.
 
 For $e\notin T$ let $\gamma_e$ be the cycle formed by $e$ and the path in $T$ joining its endpoints, and let $h(e)$ be
 its class up to sign.
@@ -140,62 +155,81 @@ If $e^*$ lies on $\alpha_1$, the cycle $\alpha_2\cup\alpha_3$ avoids $e^*$ and t
 traverses it once. So $h(e)$ has intersection number $0$ with $p_1$ and $\pm1$ with $p_3$. As $p_1$ is primitive, the
 first gives $h(e)=\lambda p_1$ for an integer $\lambda$, and the second gives $\lambda=\pm1$.
 
-(4) The same argument applies to the two loops.
+(4) By (1) the loop classes $d_1,d_2$ form a basis, so $d_1\cdot d_2=\pm1$ and both are primitive. If $e^*$ lies on the
+first loop, the second loop avoids $e^*$ and the first traverses it once. So $h(e)$ has intersection number $0$ with
+$d_2$ and $\pm1$ with $d_1$. The first gives $h(e)=\lambda d_2$, and then $\lambda d_2\cdot d_1=\pm1$ gives
+$\lambda=\pm1$. The second loop is treated in the same way, and $h(e)=0$ off the core as in (3).
 \end{proof}
 
+\begin{remark}
+Part (1) is the case $g=1$, $k=0$ of the correspondence of Lam, Lo and Yuen between a homological quasi-tree and the dual
+complement of another~\cite{LLY26}; the argument above is the elementary one for a torus.
+\end{remark}
+
 So the set of nonzero classes $h(e)$, $e\notin T$, is the superbase $\{p_1,p_2,p_3\}$ in the theta case and the basis
-$\{d_1,d_2\}$ in the figure-eight case. In the figure-eight case the third edge-simple closed path of Schramm's
-formulation runs through both loops and has class $d_1\pm d_2$. It is not a fundamental cycle, and we record such
-trees separately. Section~\ref{sec:results} shows that they disappear in the limit.
+$\{d_1,d_2\}$ in the figure-eight case. In the theta case the edge-simple closed paths of $D$ are the three cycles
+$\alpha_j\cup\alpha_k$, as in Schramm's formulation. In the figure-eight case there are four up to reversal: the two
+loops, of classes $d_1$ and $d_2$, and the two closed trails that run through both loops in either relative
+orientation, of classes $d_1+d_2$ and $d_1-d_2$. For example, on the $3\times3$ torus let $T$ consist of all horizontal
+edges that do not wrap around the torus and the two vertical edges of column $0$ that do not wrap. Then the core of
+$D(T)$ is one horizontal and one vertical loop meeting at a vertex, with classes $(1,0)$ and $(0,1)$. So at a finite
+mesh the triple of Schramm's formulation is defined only on the theta event, and we record figure-eight trees
+separately. They are a sizeable part of the small tori: $2{,}592$ of the $11{,}664$ spanning trees of the $3\times3$
+torus, $1{,}674$ of the $12{,}321$ of the torus $(3,3,1)$ and $63{,}900$ of the $367{,}500$ of the torus $(4,3,0)$.
+Section~\ref{sec:results} shows that their frequency falls quickly with the mesh.
 
 \section{Method}\label{sec:method}
 
 \subsection*{Sampling}
 A uniform spanning tree of $G$ is sampled by Wilson's algorithm~\cite{Wil96}. Starting from a root, each vertex not
 yet in the tree starts a simple random walk, which is stopped when it hits the tree, and its loop erasure is added to
-the tree. A breadth-first search from the root then lifts the tree to $\Z^2$, giving each vertex a point of $\Z^2$ in
-its class modulo $\Lambda$. For a non-tree edge from $u$ to $v$ in direction $(\Delta_x,\Delta_y)$ the displacement
-of $\gamma_e$ is $(X,Y)=\mathrm{lift}(u)+(\Delta_x,\Delta_y)-\mathrm{lift}(v)$, and its class is $b=Y/n_2$,
-$a=(X-bs)/n_1$. By Lemma~\ref{lem:struct} the distinct nonzero classes are three in the theta case and two in the
-figure-eight case.
+the tree. The tree is then lifted to $\Z^2$, giving each vertex a point of $\Z^2$ in its class modulo $\Lambda$. The
+CPU program follows the parent pointers from a vertex to the first vertex already lifted and unwinds the chain; the GPU
+program lifts each loop-erased path when it is attached. For a non-tree edge from $u$ to $v$ in direction
+$(\Delta_x,\Delta_y)$ the displacement of $\gamma_e$ is $(X,Y)=\mathrm{lift}(u)+(\Delta_x,\Delta_y)-\mathrm{lift}(v)$,
+and its class is $b=Y/n_2$, $a=(X-bs)/n_1$. By Lemma~\ref{lem:struct} the distinct nonzero classes are three in the
+theta case and two in the figure-eight case.
 
 Two implementations were used: a CPU program compiled with Numba, and a program for an Apple GPU in which each thread
-samples one tree by the same algorithm. On a Mac mini the GPU program samples $10^6$ trees of the $160\times160$ torus
-in $206$ seconds. The samples are independent across trees.
+samples one tree by the same algorithm. The CPU program draws tree $k$ of a run with seed $\sigma$ from Numba's Mersenne
+Twister reseeded with $1000003\,\sigma+k$. The GPU program gives each thread a PCG generator initialised from the seed
+and the index of its tree. On a Mac mini the GPU program samples $10^6$ trees of the $160\times160$ torus in $206$
+seconds.
 
 \subsection*{Validation}
 On three small tori we listed every spanning tree, by testing every set of $N-1$ of the $2N$ edges with a union-find
 structure, and computed the exact law of the set of nonzero classes with a separate program. The numbers of spanning
-trees found agree with the matrix-tree theorem. Table~\ref{tab:exact} compares the exact laws with the samplers.
+trees found agree with the matrix-tree theorem. Table~\ref{tab:exact} compares the exact laws with $10^6$ draws of
+each sampler, with fixed seeds. No draw produced a class set of probability zero.
 
 \begin{table}[tbp]
 \centering
 \small
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-torus $(n_1,n_2,s)$ & spanning trees & class sets & sampler & samples & $\chi^2$ / degrees of freedom\\\midrule
-$(3,3,0)$ & $11{,}664$ & $11$ & GPU & $10^6$ & $6.5/10$\\
-$(3,3,1)$ & $12{,}321$ & $9$ & GPU & $10^6$ & $8.5/8$\\
- & & & CPU & $2\cdot10^5$ & $8.2/8$\\
-$(4,3,0)$ & $367{,}500$ & $13$ & GPU & $10^6$ & $6.7/12$\\
- & & & CPU & $2\cdot10^5$ & $17.2/12$\\\bottomrule
+torus $(n_1,n_2,s)$ & spanning trees & class sets & GPU, $\chi^2$/d.f. & CPU, $\chi^2$/d.f.\\\midrule
+$(3,3,0)$ & $11{,}664$ & $11$ & $9.4/10$ & $10.8/10$\\
+$(3,3,1)$ & $12{,}321$ & $9$ & $8.8/8$ & $2.5/8$\\
+$(4,3,0)$ & $367{,}500$ & $13$ & $11.6/12$ & $5.0/12$\\\bottomrule
 \end{tabular}
 \medskip
-\caption{Samples against the exact law of the set of nonzero classes of fundamental cycles. No sample produced a
-class set of probability zero.}
+\caption{Samples against the exact law of the set of nonzero classes of fundamental cycles, $10^6$ trees for each
+sampler and torus. The class sets include the two-class sets of figure-eight trees.}
 \label{tab:exact}
 \end{table}
 
-\subsection*{Sample sizes}
-The first comparisons use $24{,}000$ trees per torus; the rest use $10^6$. Standard errors are binomial, about
-$5\cdot10^{-4}$ for the leading superbases at $10^6$ trees. A superbase is written by its periods.
+\subsection*{Sample sizes and errors}
+Every frequency reported below is from $10^6$ trees. A superbase is written by its periods. Standard errors are
+binomial, about $5\cdot10^{-4}$ for the leading superbases. A difference between two tori is measured in combined
+standard errors, the square root of the sum of the two squared standard errors.
 
 \section{Results}\label{sec:results}
 
-\subsection*{The figure-eight disappears}
-Table~\ref{tab:eight} gives the frequency of the figure-eight on the square torus. It falls by a factor of about
-$3.5$ for each halving of the mesh. On every sheared torus tested it falls by a factor of $2$ to $4$. In the limit the
-core of $D(T)$ is therefore a theta graph, and the data is a random superbase.
+\subsection*{The figure-eight}
+Table~\ref{tab:eight} gives the frequency of the figure-eight on the square torus. It falls by a factor between $3.2$
+and $3.9$ for each halving of the mesh, and on the other two ladders of Table~\ref{tab:ladder} by similar factors.
+This is consistent with a limit in which the core of $D(T)$ is a theta graph and the nonzero classes form a random
+superbase.
 
 \begin{table}[tbp]
 \centering
@@ -203,116 +237,141 @@ core of $D(T)$ is therefore a theta graph, and the data is a random superbase.
 \begin{tabular}{lcccccc}
 \toprule
 $n$ & 8 & 16 & 32 & 64 & 128 & 256\\\midrule
-figure-eight & $0.0255$ & $0.0059$ & $0.0016$ & $0.00044$ & $0.00013$ & $0.00004$\\\bottomrule
+figure-eight & $0.0223$ & $0.0058$ & $0.0016$ & $0.00044$ & $0.00013$ & $0.00004$\\\bottomrule
 \end{tabular}
 \medskip
-\caption{Frequency of a figure-eight core on the $n\times n$ torus, from $24{,}000$ trees for $n\le16$ and $10^6$
-trees for $n\ge32$.}
+\caption{Frequency of a figure-eight core on the $n\times n$ torus, $10^6$ trees each.}
 \label{tab:eight}
 \end{table}
 
 \subsection*{Convergence}
-Table~\ref{tab:ladder} follows the leading superbases at $\tau=i$ and $\tau=0.5+i$ over three meshes. They move by at
-most $9\cdot10^{-4}$, within two standard errors, from the coarsest to the finest. With $24{,}000$ trees the same holds
-at the hexagonal modulus, $0.728$ and $0.726$ for the equilateral superbase on the tori $(30,26,15)$ and $(60,52,30)$,
-and at $\tau=2i$, $0.42$ for each of the top two superbases on $32\times64$ and, with the axes exchanged, on
-$48\times24$.
+Table~\ref{tab:ladder} follows the leading superbases over three meshes at three moduli. At $\tau=i$ and $\tau=0.5+i$
+the largest change from the coarsest to the finest mesh is $1.22\cdot10^{-3}$, for $\{1,i,1+i\}$ at $\tau=i$, which is
+$1.7$ combined standard errors. Near the hexagonal modulus the superbase $\{1,\tau,1+\tau\}$ moves by
+$1.30\cdot10^{-3}$, or $3.2$ combined standard errors, from the coarsest to the finest mesh, and by at most $1.7$
+combined standard errors between the two finer meshes. The table gives no bound on the discretization error, but the
+changes are of the order of the sampling error.
 
 \begin{table}[tbp]
 \centering
 \small
 \begin{tabular}{llccc}
 \toprule
-$\tau$ & superbase & $n=32$ or $40$ & $n=64$ or $80$ & $n=128$ or $160$\\\midrule
-$i$ & $\{1,i,1+i\}$, $\{1,i,1-i\}$ & $0.4741$, $0.4746$ & $0.4749$, $0.4748$ & $0.4753$, $0.4745$\\
-$i$ & the four with $Q=8$ & $0.0124$--$0.0126$ & $0.0124$--$0.0126$ & $0.0125$--$0.0126$\\
-$0.5+i$ & $\{1,\tau,1-\tau\}$ & $0.7142$ & $0.7142$ & $0.7137$\\
-$0.5+i$ & the two with $Q=5.5$ & $0.1185$, $0.1183$ & $0.1188$, $0.1189$ & $0.1194$, $0.1192$\\
-$0.5+i$ & $\{\tau,1-\tau,1-2\tau\}$ & $0.0465$ & $0.0464$ & $0.0462$\\\bottomrule
+$\tau$ & superbase & coarse & middle & fine\\\midrule
+$i$ & $\{1,i,1+i\}$ & $0.47405$ & $0.47486$ & $0.47527$\\
+ & $\{1,i,1-i\}$ & $0.47455$ & $0.47477$ & $0.47449$\\
+ & the four with $Q=8$ & $0.01237$--$0.01256$ & $0.01239$--$0.01259$ & $0.01245$--$0.01258$\\
+ & figure-eight & $0.00158$ & $0.00044$ & $0.00013$\\
+$0.5+i$ & $\{1,\tau,1-\tau\}$ & $0.71419$ & $0.71420$ & $0.71371$\\
+ & $\{1,\tau,1+\tau\}$ & $0.11833$ & $0.11886$ & $0.11921$\\
+ & $\{1,1-\tau,2-\tau\}$ & $0.11850$ & $0.11877$ & $0.11936$\\
+ & $\{\tau,1-\tau,1-2\tau\}$ & $0.04654$ & $0.04641$ & $0.04617$\\
+ & figure-eight & $0.00099$ & $0.00029$ & $0.00009$\\
+$0.5+\tfrac{13}{15}i$ & $\{1,\tau,1-\tau\}$ & $0.72731$ & $0.72769$ & $0.72756$\\
+ & $\{1,\tau,1+\tau\}$ & $0.08953$ & $0.09071$ & $0.09083$\\
+ & $\{1,1-\tau,2-\tau\}$ & $0.08988$ & $0.08995$ & $0.09065$\\
+ & $\{\tau,1-\tau,1-2\tau\}$ & $0.09052$ & $0.09017$ & $0.08984$\\
+ & figure-eight & $0.00184$ & $0.00053$ & $0.00014$\\\bottomrule
 \end{tabular}
 \medskip
-\caption{Probabilities over three meshes, $10^6$ trees each: the $n\times n$ torus for $\tau=i$ ($n=32,64,128$) and
-the torus $(n,n,n/2)$ for $\tau=0.5+i$ ($n=40,80,160$).}
+\caption{Frequencies over three meshes, $10^6$ trees each: the $n\times n$ torus for $\tau=i$ ($n=32,64,128$), the
+torus $(n,n,n/2)$ for $\tau=0.5+i$ ($n=40,80,160$), and the tori $(30,26,15)$, $(60,52,30)$, $(120,104,60)$ for
+$\tau=0.5+\tfrac{13}{15}i$.}
 \label{tab:ladder}
 \end{table}
 
 \subsection*{Placement on the grid}
 Let $g$ be an element of $\mathrm{PSL}_2(\Z)$, acting on the modulus by a M\"obius transformation, so that the torus
 of modulus $g\tau$ is conformally equivalent to $\Sigma_\tau$. If the limit is conformally invariant, the laws at
-$\tau$ and at $g\tau$ agree once the classes are carried over by $g$, although the two tori sit differently on the square grid. We realized
-$(\tau-1)/\tau=0.6+0.8i$ for $\tau=0.5+i$ as the torus $(200,160,120)$, and $2i/(1+2i)=0.8+0.4i$ as $(300,120,240)$.
-We compared them with the axis-parallel tori $(160,160,80)$ and $64\times128$. Table~\ref{tab:place} gives the result.
-On the first pair the four main superbases agree to $0.34$ standard errors, and no superbase differs by more than
-$1.9$. On the second pair the two top superbases are a mirror pair whose sum agrees to $1.25$ standard errors. With
-$24{,}000$ trees, four more pairs on coarser meshes agree within $2.8$ standard errors. The largest gap goes the
-same way as the mesh effect of Table~\ref{tab:ladder}.
+$\tau$ and at $g\tau$ agree once the classes are carried over by $g$, although the two tori sit differently on the
+square grid. We realized $(\tau-1)/\tau=0.6+0.8i$ for $\tau=0.5+i$ as the torus $(200,160,120)$, and
+$2i/(1+2i)=0.8+0.4i$ as $(300,120,240)$, and compared them with the axis-parallel tori $(160,160,80)$ and
+$64\times128$. For each pair we formed the $2\times K$ table of theta-core trees by superbase, pooling the superbases
+with fewer than $200$ trees in the two tori together into one cell, and computed Pearson's $\chi^2$.
+Table~\ref{tab:place} gives the result. The first pair gives $\chi^2=10.09$ on $8$ degrees of freedom and the second
+$7.24$ on $8$. In the first pair the four leading superbases agree within $0.34$ combined standard errors. In the
+second pair the largest single difference, $2.1$ combined standard errors, is in one of the top
+two superbases, which form a mirror pair; their sum differs by $1.27$ combined standard errors. The figure-eight
+frequencies of the second pair differ, $362$ against $103$ per million, as expected from the mesh effect of
+Table~\ref{tab:eight}: the torus $(300,120,240)$ has $36{,}000$ vertices and $64\times128$ has $8{,}192$.
 
 \begin{table}[tbp]
 \centering
-\small
-\begin{tabular}{lll}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llll}
 \toprule
-pair & axis-parallel & at an angle\\\midrule
-$0.5+i$ and $0.6+0.8i$ & $0.7137$, $0.1194$, $0.1192$, $0.0462$ & within $0.34$ s.e.\ on these four\\
-$2i$ and $0.8+0.4i$ & $0.4207$, $0.4196$; $0.0770$, $0.0768$ & $0.4199$, $0.4211$; $0.0769$, $0.0765$\\\bottomrule
+pair & axis-parallel & at an angle & $\chi^2$/d.f.\\\midrule
+$0.5+i$ and $0.6+0.8i$ & $0.7137$, $0.1192$, $0.1194$, $0.0462$ & $0.7137$, $0.1192$, $0.1193$, $0.0463$ & $10.09/8$\\
+$2i$ and $0.8+0.4i$ & $0.4196$, $0.4207$; $0.0770$, $0.0768$ & $0.4211$, $0.4199$; $0.0765$, $0.0769$ & $7.24/8$\\\bottomrule
 \end{tabular}
 \medskip
 \caption{Tori placed at an angle to the grid against the equivalent axis-parallel tori, $10^6$ trees each. The classes
 are mapped by $\left(\begin{smallmatrix}0&-1\\1&1\end{smallmatrix}\right)$ and
-$\left(\begin{smallmatrix}1&0\\1&1\end{smallmatrix}\right)$.}
+$\left(\begin{smallmatrix}1&0\\1&1\end{smallmatrix}\right)$. The frequencies are listed in the order $\{1,\tau,1-\tau\}$, $\{1,\tau,1+\tau\}$, $\{1,1-\tau,2-\tau\}$,
+$\{\tau,1-\tau,1-2\tau\}$ for the first pair, with $\tau=0.5+i$, and
+$\{1,2i,1+2i\}$, $\{1,2i,1-2i\}$; $\{1,1+2i,2+2i\}$, $\{1,1-2i,2-2i\}$ of the axis-parallel torus.}
 \label{tab:place}
 \end{table}
 
-\subsection*{The limit at four moduli}
-Table~\ref{tab:limit} gives the law on the finest mesh at four moduli. By Table~\ref{tab:ladder} these are the limit
-values to about three digits. On the square torus the six superbases listed carry all but about $10^{-4}$ of the
-mass. The symmetries of each lattice are visible: mirror superbases, and the three superbases of the second level of
-the hexagonal torus, have equal probabilities within sampling error.
+\subsection*{Finest-mesh estimates at four moduli}
+Table~\ref{tab:limit} gives the law on the finest mesh at four moduli. By Table~\ref{tab:ladder} we take these as
+estimates of the conjectured limit to about three digits. On the $256\times256$ torus the six superbases listed carry
+all but $79$ of $10^6$ trees: $43$ figure-eights and $36$ other theta cores. Mirror superbases have equal frequencies
+within sampling error. The torus $(120,104,60)$ has modulus $0.5+\tfrac{13}{15}i$, at distance $6.4\cdot10^{-4}$ from
+$e^{i\pi/3}$; its lattice has only the mirror symmetry, and its three superbases of the second level have energies
+$5.772$, $5.772$ and $5.777$.
 
 \begin{table}[tbp]
 \centering
 \small
 \begin{tabular}{llcc}
 \toprule
-$\tau$ (torus) & superbase & $Q$ & probability\\\midrule
+$\tau$ (torus) & superbase & $Q$ & frequency\\\midrule
 $i$ ($256\times256$) & $\{1,i,1+i\}$, $\{1,i,1-i\}$ & $4$ & $0.4750$, $0.4749$\\
  & four, e.g.\ $\{1,1+i,2+i\}$ & $8$ & $0.0124$--$0.0126$\\
  & figure-eight & & $0.00004$\\
-$e^{i\pi/3}$ ($(120,104,60)$) & $\{1,\tau,1-\tau\}$ & $3.46$ & $0.7276$\\
- & three, e.g.\ $\{1,\tau,1+\tau\}$ & $5.77$ & $0.0898$--$0.0908$\\
- & six, e.g.\ $\{1,1+\tau,2+\tau\}$ & $12.7$ & $0.00016$--$0.00018$\\
+$0.5+\tfrac{13}{15}i$ ($(120,104,60)$) & $\{1,\tau,1-\tau\}$ & $3.464$ & $0.7276$\\
+ & $\{1,\tau,1+\tau\}$, $\{1,1-\tau,2-\tau\}$ & $5.772$ & $0.0908$, $0.0907$\\
+ & $\{\tau,1-\tau,1-2\tau\}$ & $5.777$ & $0.0898$\\
+ & six, e.g.\ $\{1,1+\tau,2+\tau\}$ & $12.70$ & $0.00015$--$0.00018$\\
 $0.5+i$ ($(160,160,80)$) & $\{1,\tau,1-\tau\}$ & $3.5$ & $0.7137$\\
- & $\{1,\tau,1+\tau\}$, $\{1,1-\tau,2-\tau\}$ & $5.5$ & $0.1194$, $0.1192$\\
+ & $\{1,\tau,1+\tau\}$, $\{1,1-\tau,2-\tau\}$ & $5.5$ & $0.1192$, $0.1194$\\
  & $\{\tau,1-\tau,1-2\tau\}$ & $6.5$ & $0.0462$\\
-$2i$ ($64\times128$) & $\{1,2i,1+2i\}$, $\{1,2i,1-2i\}$ & $5$ & $0.4207$, $0.4196$\\
+$2i$ ($64\times128$) & $\{1,2i,1+2i\}$, $\{1,2i,1-2i\}$ & $5$ & $0.4196$, $0.4207$\\
  & $\{1,1+2i,2+2i\}$, $\{1,1-2i,2-2i\}$ & $7$ & $0.0770$, $0.0768$\\
- & $\{1,2+2i,3+2i\}$, $\{1,2-2i,3-2i\}$ & $11$ & $0.0027$, $0.0026$\\\bottomrule
+ & $\{1,2+2i,3+2i\}$, $\{1,2-2i,3-2i\}$ & $11$ & $0.0026$, $0.0027$\\
+ & figure-eight & & $0.00036$\\\bottomrule
 \end{tabular}
 \medskip
 \caption{The law of the superbase on the finest mesh, $10^6$ trees each. Standard errors are about $5\cdot10^{-4}$
-for the leading values and $10^{-4}$ near $0.01$. The torus $(120,104,60)$ has $\tau=0.5+0.8667i$, within $10^{-3}$
-of $e^{i\pi/3}$.}
+for the leading values and $10^{-4}$ near $0.01$.}
 \label{tab:limit}
 \end{table}
 
 \subsection*{The weight of a superbase}
-A superbase determines its lattice up to similarity. So the law can always be written as
-$\Prob_\tau(S)=w(\text{shape of }S)/Z(\tau)$, with a positive weight $w$ of the shape of the triangle of $S$ and
-$Z(\tau)=\sum_S w(\text{shape of }S)$ the sum over the superbases of the lattice. The content of a formula is in
-the form of $w$. The shape of a
-triangle with angles $A,B,C$ is fixed by $e_1=\cot A+\cot B+\cot C=Q/2$ and $e_3=\cot A\cot B\cot C$, because $\cot
-A\cot B+\cot B\cot C+\cot C\cot A=1$ for every triangle.
+Suppose that the law conditioned on a theta core has a limit that is conformally invariant and invariant under
+reflection. A superbase determines its lattice up to similarity, and reflection maps the torus of modulus $\tau$ to
+that of modulus $-\bar\tau$, so the limiting probability of a superbase $S$ is then a function of the unoriented shape
+of its triangle alone. At a finite mesh we write the frequencies as $\Prob_\tau(S)=w(\text{shape of }S)/Z(\tau)$, with
+a positive weight $w$ and a normalisation $Z(\tau)$ for each torus, which also absorbs the figure-eight mass and the
+superbases left out of a fit. The content of a formula is in the form of $w$. The shape of a triangle with angles
+$A,B,C$ is fixed by $e_1=\cot A+\cot B+\cot C=Q/2$ and $e_3=\cot A\cot B\cot C$: since $\cot A\cot B+\cot B\cot
+C+\cot C\cot A=1$ for every triangle, the three cotangents are the roots of $t^3-e_1t^2+t-e_3$.
 
-The simplest guess is $w=\exp(-cQ)$. The ratio of the top superbase to the next level gives $c=0.909$ on the square
-torus ($Q$ from $4$ to $8$), $0.904$ on the hexagonal torus ($Q$ from $3.46$ to $5.77$, and again to $12.7$), and
-$0.896$ and $0.911$ at $0.5+i$. At $2i$ it gives $0.85$. The exponential form holds to a few percent near the square
-and hexagonal tori and fails on the longer torus.
+The simplest guess is $w=\exp(-cQ)$. The ratio of the top superbase to the next level on the finest mesh, with the
+symmetric superbases of a level pooled, gives $c=0.909$ on the square torus ($Q$ from $4$ to $8$), $0.903$ near the
+hexagonal torus ($Q$ from $3.46$ to $5.77$) and $0.911$ from there to $Q=12.7$, and $0.894$ and $0.913$ at $0.5+i$
+($Q$ from $3.5$ to $5.5$ and to $6.5$). At $2i$ it gives $0.849$. The standard errors are about $0.001$ on the square
+torus and at $2i$, so the difference of $0.06$ between them is far outside sampling error. On these meshes a single
+exponential of $Q$ holds to a few percent near the square and hexagonal tori and fails on the longer torus.
 
 To see more of $w$ we sampled a grid of $49$ moduli: the tori $(100,n_2,s)$ with
-$n_2\in\{100,110,125,150,175,200,250,300\}$ and $s\in\{0,10,\dots,50\}$, and the torus $(100,90,50)$, with $10^6$
-trees each. This gives $333$ cells with at least $200$ counts and $284$ distinct shapes. We fitted $\log w$ as a
-polynomial in $(e_1,e_3)$ by weighted least squares on the log-probabilities, with $\log Z$ free for each modulus.
-Table~\ref{tab:fit} shows the fit by degree.
+$n_2\in\{100,110,125,150,175,200,250,300\}$ and $s\in\{0,10,\dots,50\}$, and the torus $(100,90,50)$. This gives $333$
+cells with at least $200$ counts and $284$ distinct shapes. We fitted $\log w$ as a polynomial in $(e_1,e_3)$ without
+constant term by weighted least squares on the log-frequencies, with $\log Z$ free for each modulus and the weight of a
+cell the square root of its count. Table~\ref{tab:fit} shows the fit by degree. The fourth-degree fit leaves
+$\chi^2=338.7$ on $270$ degrees of freedom ($p\approx0.003$), so it is close but not exact on the grid.
 
 \begin{table}[tbp]
 \centering
@@ -320,36 +379,50 @@ Table~\ref{tab:fit} shows the fit by degree.
 \begin{tabular}{lcccc}
 \toprule
 degree & 1 & 2 & 3 & 4\\\midrule
-coefficients & 2 & 5 & 9 & 14\\
+shape coefficients & 2 & 5 & 9 & 14\\
+residual degrees of freedom & 282 & 277 & 273 & 270\\
 $\chi^2$ per degree of freedom & 94.03 & 11.67 & 2.54 & 1.25\\\bottomrule
 \end{tabular}
 \medskip
-\caption{Fit of $\log w$ by a polynomial in $(e_1,e_3)$ on the grid of $49$ moduli.}
+\caption{Fit of $\log w$ by a polynomial in $(e_1,e_3)$ on the grid of $49$ moduli, with one free $\log Z$ per
+modulus.}
 \label{tab:fit}
 \end{table}
 
-We held the fourth-degree polynomial fixed and refitted only $\log Z$ on six finer meshes outside the grid: the tori
-$256\times256$, $(160,160,80)$, $(200,160,120)$, $(300,120,240)$, $64\times128$ and $(120,104,60)$. It predicts them
-at $\chi^2$ per degree of freedom $1.02$ over $28$ degrees of freedom, with no cell beyond $1.92$ standard errors.
+We tested the fourth-degree polynomial on six finer meshes outside the grid: the tori $256\times256$, $(160,160,80)$,
+$(200,160,120)$, $(300,120,240)$, $64\times128$ and $(120,104,60)$. With the coefficients held fixed and only $\log Z$
+refitted, $\chi^2$ per degree of freedom is $1.02$ over $28$ degrees of freedom, with no cell beyond $1.92$ standard
+errors. A predictive statistic that includes the uncertainty of the fitted coefficients, the increase of the minimised
+$\chi^2$ when the six tori join the fit, each with its own $\log Z$, is $27.78$ on $28$ degrees of freedom
+($p=0.48$).
 
-It does not extrapolate in aspect ratio. We sampled $18$ longer tori, $(100,n_2,s)$ with $n_2\in\{350,400,500\}$. The
-fifth-degree polynomial fitted on the grid predicts $n_2=350$ at $\chi^2$ per degree of freedom $1.0$ to $3.4$ per
-modulus, but $n_2=400$ at $17$ to $33$. Fitted with $n_2=350$ and $400$ added, the fifth- and sixth-degree
-polynomials predict $n_2=500$ at $101$ and $99$. Their worst cells are near $19$ standard errors and of opposite
-signs. The degree needed grows with the range of shapes, so a polynomial in $(e_1,e_3)$ describes $w$ locally and is
-not its form. Short closed forms do worse. The best four-term form we tried, in $Q$, $\log Q$, $\sum_i\log L_i$ and
-$\sum_i L_i^2$ with $L_i=|v_i|^2/\operatorname{Im}\tau$, reaches $2.58$. Terms in the sides alone do not help, so $w$
-is not a product of one factor per side.
+In aspect ratio the fit is poorly determined. We sampled $18$ longer tori, $(100,n_2,s)$ with $n_2\in\{350,400,500\}$.
+With the coefficients of the fifth-degree polynomial fitted on the grid held fixed, $\chi^2$ per degree of freedom is
+$2.17$ at $n_2=350$ and $24.7$ at $n_2=400$. Most of this is the uncertainty of the coefficients outside the range of
+the grid: the predictive statistic is $45.45$ on $43$ degrees of freedom at $n_2=350$ ($p=0.37$) and $43.23$ on $45$ at
+$n_2=400$ ($p=0.55$). Fitted with $n_2=350$ and $400$ added, the fifth- and sixth-degree polynomials give $\chi^2$ per
+degree of freedom $101$ and $99$ at $n_2=500$ with fixed coefficients, and predictive statistics $95.16$ on $51$
+($p=1.7\cdot10^{-4}$) and $55.01$ on $51$ ($p=0.33$). So a polynomial in $(e_1,e_3)$ describes $w$ well on the range of
+shapes it is fitted on, and the data do not determine it beyond that range. Short closed forms do worse on the grid. We
+tried combinations of $Q$, $\log Q$, $1/Q$, $Q^2$, $\log\sin$ of the angles, $e_3$ and the cotangents with sums over the
+sides of $\log L_i$, $L_i^2$, $1/L_i$, $L_i^{1/2}$ and $L_i^3$ and with the largest side, where
+$L_i=|v_i|^2/\operatorname{Im}\tau$. The best four-term form, in $Q$, $\log Q$, $\sum_i\log L_i$ and $\sum_i L_i^2$,
+reaches $\chi^2$ per degree of freedom $2.58$, against $1.25$ for the fourth-degree polynomial.
 
 \section{Discussion}
 
-The estimates support the picture Lyons proposed. The law of the superbase has a limit, the limit depends only on the
-conformal class of the torus, and it is concentrated on the few shortest superbases. A route to a formula is the one
-that gives the homology law of cycle-rooted spanning forests~\cite{Ken11}. There the law is a ratio of determinants of
-the Laplacian twisted by a flat line bundle, and its limit is explicit~\cite{KK17}. For the dual of a tree the core
-has two independent cycles, and the corresponding expansion would be of second order in the connection. We have not
-carried it out. The deviation from $\exp(-0.9\,Q)$ at $\tau=2i$ is far outside the sampling error, so the answer is
-not the simplest weight of this kind.
+The estimates are consistent with the picture Lyons proposed: a limit law of the superbase that depends only on the
+conformal class of the torus and is concentrated on the few shortest superbases. They do not prove convergence, and
+the tables carry no bound on the discretization error. A natural route to a formula is through determinants of
+twisted Laplacians. For cycle-rooted spanning forests the law of the homology is a ratio of such determinants, by
+Forman's expansion~\cite{For93} and Kenyon's work~\cite{Ken11}, and its limit is known~\cite{KK17}. The expansion does
+not apply directly here. In the line-bundle formula each cycle of a forest contributes $2-2\cos(t\theta)$, so every
+Taylor coefficient in the connection counts cycle-rooted forests, and the second-order coefficient counts connected
+unicyclic spanning subgraphs. The dual of a spanning tree is a connected graph with two independent cycles, which
+these coefficients do not count. A formula would need a different generating object, perhaps through the period
+matrices of discrete surfaces studied by Lam, Lo and Yuen~\cite{LLY26}. Whatever its form, the slope of $-\log w$ in $Q$
+is $0.909$ at $\tau=i$ and $0.849$ at $\tau=2i$ on the finest meshes, so the weight is not a single exponential of the
+energy.
 
 \section*{Acknowledgements and funding}
 This work was done by multiple AI agents, Claude (Anthropic) and Codex (OpenAI), connected to Math
@@ -368,8 +441,9 @@ Capital, by the Israel Science Foundation (grant number 2258/19), and by the Isr
 
 \section*{Data availability}
 The samplers, the exact enumeration, the analysis programs and the sampled class sets are available at\\
-\url{https://github.com/yspennstate/ust-torus-dual-theta/tree/v1.0}.
-The class sets of the $80$ tori with $10^6$ trees are attached to that release as compressed files.
+\url{https://github.com/yspennstate/ust-torus-dual-theta/tree/v1.1}.
+The class sets of the $80$ tori with $10^6$ trees are attached to the v1.0 release as compressed files, and the
+validation draws of Tables~\ref{tab:exact} and~\ref{tab:eight} to the v1.1 release.
 
 The paper is part of the Math Brain project, whose public repository is given in~\cite{MathBrainRepo}.
 
@@ -380,20 +454,34 @@ These entities are included in the funding declaration above.
 \section*{Declaration of generative AI and AI-assisted technologies}
 Claude agents (Anthropic) wrote the programs, ran the simulations, proved Lemma~\ref{lem:struct} and prepared the
 manuscript; Codex agents (OpenAI) refereed it. The question is Russell Lyons's~\cite{Ly03}, in the form given by Oded
-Schramm~\cite{Sch07}. The sampler is David Wilson's algorithm~\cite{Wil96}. The homology laws of cycle-rooted forests
-are due to Richard Kenyon~\cite{Ken11} and to Adrien Kassel and Kenyon~\cite{KK17}. The author directed the work and is
-responsible for the content of the paper.
+Schramm~\cite{Sch07}. The sampler is David Wilson's algorithm~\cite{Wil96}. The determinant expansion over cycle-rooted
+forests is due to Robin Forman~\cite{For93}, and the homology laws of cycle-rooted forests to Richard
+Kenyon~\cite{Ken11} and to Adrien Kassel and Kenyon~\cite{KK17}. The correspondence of homological quasi-trees is due to
+Wai Yeung Lam, On-Hei Solomon Lo and Chi Ho Yuen~\cite{LLY26}. The author directed the work and is responsible for the content
+of the paper.
 
 \begin{thebibliography}{99}
+\bibitem{BLR25} N.~Berestycki, B.~Laslier and G.~Ray, \emph{Dimers on Riemann surfaces I: Temperleyan forests}, Ann.
+Inst. Henri Poincar\'e D \textbf{12} (2025), no.~2, 363--444, \doi{10.4171/AIHPD/193}, \arxiv{1908.00832}.
+\bibitem{BLR24} N.~Berestycki, B.~Laslier and G.~Ray, \emph{Dimers on Riemann surfaces II: conformal invariance and
+scaling limit}, Probab. Math. Phys. \textbf{5} (2024), 961--1037, \doi{10.2140/pmp.2024.5.961}.
+\bibitem{Dub15} J.~Dub\'edat, \emph{Dimers and families of Cauchy--Riemann operators I}, J. Amer. Math. Soc.
+\textbf{28} (2015), 1063--1167, \doi{10.1090/jams/824}, \arxiv{1110.2808}.
+\bibitem{DG15} J.~Dub\'edat and R.~Gheissari, \emph{Asymptotics of height change on toroidal Temperleyan dimer models},
+J. Stat. Phys. \textbf{159} (2015), 75--100, \doi{10.1007/s10955-014-1181-x}, \arxiv{1407.6227}.
+\bibitem{For93} R.~Forman, \emph{Determinants of Laplacians on graphs}, Topology \textbf{32} (1993), 35--46,
+\doi{10.1016/0040-9383(93)90035-T}.
 \bibitem{KK17} A.~Kassel and R.~Kenyon, \emph{Random curves on surfaces induced from the Laplacian determinant}, Ann.
 Probab. \textbf{45} (2017), 932--964, \doi{10.1214/15-AOP1078}, \arxiv{1211.6974}.
 \bibitem{Ken11} R.~Kenyon, \emph{Spanning forests and the vector bundle Laplacian}, Ann. Probab. \textbf{39} (2011),
 1983--2017, \doi{10.1214/10-AOP596}, \arxiv{1001.4028}.
 \bibitem{KSW16} R.~Kenyon, N.~Sun and D.~B. Wilson, \emph{On the asymptotics of dimers on tori}, Probab. Theory
-Related Fields \textbf{166} (2016), 971--1023, \doi{10.1007/s00440-015-0687-8}.
+Related Fields \textbf{166} (2016), 971--1023, \doi{10.1007/s00440-015-0687-8}, \arxiv{1310.2603}.
 \bibitem{KW15} R.~Kenyon and D.~B. Wilson, \emph{Spanning trees of graphs on surfaces and the intensity of loop-erased
 random walk on planar graphs}, J. Amer. Math. Soc. \textbf{28} (2015), 985--1030, \doi{10.1090/S0894-0347-2014-00819-5},
 \arxiv{1107.3377}.
+\bibitem{LLY26} W.~Y.~Lam, O.-H.~S.~Lo and C.~H.~Yuen, \emph{Period matrices and homological quasi-trees on discrete
+Riemann surfaces}, J. Reine Angew. Math., published online 2026, \doi{10.1515/crelle-2026-0033}, \arxiv{2506.02317}.
 \bibitem{Ly03} R.~Lyons, \emph{Determinantal probability measures}, Publ. Math. Inst. Hautes \'Etudes Sci.
 \textbf{98} (2003), 167--212, \doi{10.1007/s10240-003-0016-0}, \arxiv{math/0204325}.
 \bibitem{Sch07} O.~Schramm, \emph{Conformally invariant scaling limits: an overview and a collection of problems},

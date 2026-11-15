@@ -126,6 +126,8 @@ def classes(nxt, lx, ly, n1, n2):
 
 def main():
     n1, n2, S, seed, out = int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), sys.argv[5]
+    if n1 < 3 or n2 < 3:
+        sys.exit("need n1, n2 >= 3, so that the grid is a simple 4-regular graph")
     with open(out, "w") as f:
         for s in range(S):
             nxt = wilson(n1, n2, seed * 1000003 + s)

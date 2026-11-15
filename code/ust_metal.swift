@@ -106,6 +106,7 @@ struct P { var n1: UInt32; var n2: UInt32; var s: Int32; var N: UInt32; var seed
 let a = CommandLine.arguments
 guard a.count >= 7 else { print("usage: ust_metal n1 n2 s samples seed out.tsv [threads]"); exit(2) }
 let n1 = UInt32(a[1])!, n2 = UInt32(a[2])!, sh = Int32(a[3])!, S = Int(a[4])!, seed = UInt32(a[5])!
+guard n1 >= 3, n2 >= 3, sh >= 0, UInt32(sh) < n1 else { print("need n1, n2 >= 3 and 0 <= s < n1"); exit(2) }
 let outPath = a[6]
 let T = a.count > 7 ? Int(a[7])! : 2048
 let N = Int(n1 * n2)
